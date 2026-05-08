@@ -28,23 +28,17 @@ public class DiscountService {
     }
 
     /**
-     * Returns the discount percentage for a supported code.
+     * Applies a discount code and extra VIP discount to a subtotal.
      *
-     * @param code the discount code
-     * @return 0.0 for unsupported codes, 0.10 for SAVE10, 0.20 for SAVE20
+     * @param subtotal the subtotal amount before discount
+     * @param code the discount code to apply
+     * @param customerType the customer type for additional discounts
+     * @return the discounted total
      */
-    public static double getDiscountRate(String code) {
-        if (code == null) {
-            return 0.0;
+    public static double applyDiscount(double subtotal, String code, CustomerType customerType) {
+        double discounted = applyDiscount(subtotal, code);
+        if (customerType == CustomerType.VIP) {
+            discounted *= 0.95; // Extra 5% discount for VIP
         }
-
-        switch (code.trim().toUpperCase()) {
-            case SAVE10:
-                return 0.10;
-            case SAVE20:
-                return 0.20;
-            default:
-                return 0.0;
-        }
+        return discounted;
     }
-}
