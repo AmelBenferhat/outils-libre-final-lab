@@ -18,10 +18,19 @@ public class PricingEngine {
             throw new IllegalArgumentException("Prices and quantities must have the same length.");
         }
 
-        double subtotal = 0.0;
-        for (int i = 0; i < prices.length; i++) {
-            subtotal += prices[i] * quantities[i];
-        }
-        return subtotal;
+    /**
+     * Calculates the final price including subtotal, discounts, and tax.
+     *
+     * @param prices       the item prices
+     * @param quantities   the item quantities
+     * @param discountCode the discount code to apply (can be null)
+     * @param customerType the customer type for additional discounts
+     * @param taxRate      the tax rate as a decimal (e.g., 0.08 for 8%)
+     * @return the final price after all calculations
+     */
+    public static double calculateFinalPrice(double[] prices, int[] quantities, String discountCode, CustomerType customerType, double taxRate) {
+        double subtotal = calculateSubtotal(prices, quantities);
+        double discounted = DiscountService.applyDiscount(subtotal, discountCode, customerType);
+        double tax = TaxService.calculateTax(discounted, taxRate);
+        return discounted + tax;
     }
-}
