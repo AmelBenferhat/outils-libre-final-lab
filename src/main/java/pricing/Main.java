@@ -10,17 +10,12 @@ public class Main {
         CustomerType customerType = CustomerType.VIP;
         double taxRate = 0.08; // 8%
 
-        // Calculate final price
-        double finalPrice = PricingEngine.calculateFinalPrice(prices, quantities, discountCode, customerType, taxRate);
+        PricingRequest request = new PricingRequest(prices, quantities, discountCode, customerType, taxRate);
+        PricingResult result = PricingEngine.calculatePricing(request);
 
-        // Display results
-        double subtotal = PricingEngine.calculateSubtotal(prices, quantities);
-        double discounted = DiscountService.applyDiscount(subtotal, discountCode, customerType);
-        double tax = TaxService.calculateTax(discounted, taxRate);
-
-        System.out.println("Subtotal: $" + subtotal);
-        System.out.println("After discount: $" + discounted);
-        System.out.println("Tax: $" + tax);
-        System.out.println("Final Price: $" + finalPrice);
+        System.out.println("Subtotal: $" + result.getSubtotal());
+        System.out.println("After discount: $" + result.getDiscountedTotal());
+        System.out.println("Tax: $" + result.getTaxAmount());
+        System.out.println("Final Price: $" + result.getFinalTotal());
     }
 }
