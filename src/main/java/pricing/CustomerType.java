@@ -1,5 +1,6 @@
 package main.java.pricing;
 
-public class CustomerType {
-    
+public enum CustomerType {
+    REGULAR,
+    VIP
 }
